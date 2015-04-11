@@ -1,0 +1,173 @@
+<!DoCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BOMSlide</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!-- Optional theme -->
+<link rel="stylesheet" href="assets/css/bootstrap-slider.min.css">
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
+</style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>bomSlide</h1>
+          <hr>
+          <br />
+          <div class="well">
+            <h3>Select Date/Time Range:</h3>
+            <br />
+            <div id="slider-range"></div>
+            <div id="range"></div>
+          </div>
+          <br />
+          <div class="well">
+            <h3>Play Controls</h3>
+            <br />
+  
+            <div class="input-group col-md-3">
+              <div class="input-group-btn">
+                <button id="play" class="btn btn-default"><i class="fa fa-play"></i></button> 
+                <button id="stop" class="btn btn-default"><i class="fa fa-pause"></i></button>
+
+              <!-- Button and dropdown menui -->
+              </div>
+              <span class="input-group-addon">Interval:</span>
+              <input id="spinner" name="value" value="100" type="text" class="form-control">
+            </div>
+            <br />
+            <div id="slider-time"></div>
+            <div id="time"></div>
+          </div>
+
+        </div>
+      </div>
+      <br />
+      <div class="row">
+          <div class="col-md-12">
+          <div style="position:relative;width:512px;height:512px;margin:0 auto;">
+              <img id="image" style="position:absolute;top:0;left:0;z-index:5" src="#" />
+              <img id="img1" style="position:absolute;top:0;left:0;z-index:4" src="http://www.bom.gov.au/products/radar_transparencies/IDR714.topography.png">
+              <img id="img2" style="position:absolute;top:0;left:0;z-index:5" src="http://www.bom.gov.au/products/radar_transparencies/IDR714.range.png">
+              <img id="img3" style="position:absolute;top:0;left:0;z-index:5" src="http://www.bom.gov.au/products/radar_transparencies/IDR714.locations.png">
+              <img id="img4" style="position:absolute;top:0;left:0;z-index:1" src="http://www.bom.gov.au/products/radar_transparencies/IDR714.background.png">
+          </div>
+      </div>
+    <div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootstrap-slider.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+      // start is the original start
+      start = moment.unix(1426337600);
+      start.utc();
+
+      var now = moment().utc();
+      console.log(now.unix())
+      // now is the current time
+
+      while(now.minute() % 6 != 0) {
+        console.log(now.minute());
+        now.subtract(1, "minutes");
+      }
+      now.add(1, "minutes");
+      //console.log(start.unix())
+      console.log(now.unix())
+      
+      function slideTime(event, ui) {
+        var epoch = $("#slider-time").slider("value");
+        //console.log(epoch);
+        time = moment.unix(epoch);
+        time.utc();
+        $("#time").text(time.format("dddd, MMMM Do YYYY, h:mm a") + " UTC");
+        $("#image").attr("src","images/" + time.format("YYYYMMDDHHmm.png"))
+        
+    }
+      
+
+       function slideRange(event, ui) {
+        var epoch1 = $("#slider-range").slider("values", 0);
+        var epoch2 = $("#slider-range").slider("values",  1);
+        time1 = moment.unix(epoch1);
+        time2 = moment.unix(epoch2);
+        time1.utc();
+        time2.utc();
+        time1.add(1, "minutes");
+        $( "#slider-time" ).slider( "option", "min",  time1.unix());
+        $( "#slider-time" ).slider( "option", "max", time2.unix());
+
+        $("#range").text(time1.format("dddd, MMMM Do YYYY, h:mm a") + " UTC - " + time2.format("dddd, MMMM Do YYYY, h:mm a") + " UTC");
+      }
+
+      function play() {
+        value = $("#slider-time").slider("value");
+        start = $("#slider-time").slider( "option", "min" );
+        max = $("#slider-time").slider( "option", "max");
+        if (value+360 > max) 
+          value = start - 360;
+        $( "#slider-time" ).slider( "value", value + 360 );
+        
+        //console.log(value);
+      }
+
+      $(function() {
+
+        $("#slider-time").slider({
+          min: start.unix(),
+          max: now.unix(),
+          value: start.unix(),
+          step:60*6,
+          change: slideTime,
+          slide: slideTime
+        });
+
+        $("#slider-range").slider({
+          range: true,
+          min: start.unix(),
+          max: now.unix(),
+          values: [start.unix(), now.unix()],
+          step:60*6,
+          slide: slideRange
+        });
+        slideRange();
+        slideTime();
+        var myInterval = null;
+
+        $('#play').click(function(){
+          myInterval = setInterval(function(){
+            play();
+            $("#play").attr("disabled", true);
+            $("stop").attr("disabled", false);
+          }, $("#spinner").val());
+        });
+        $("#stop").click(function(){
+          clearInterval(myInterval);
+          $("#play").attr("disabled", false);
+          $("stop").attr("disabled", true);
+
+        });
+      });
+
+      </script>
+  </body>
+</html>
+
