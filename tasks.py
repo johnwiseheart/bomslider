@@ -17,7 +17,7 @@ REDIS_URL = environ.get('REDISTOGO_URL', 'redis://localhost')
 
 celery = Celery('tasks', broker=REDIS_URL)
 
-@periodic_task(run_every=timedelta(minutes=5))
+@periodic_task(run_every=timedelta(minutes=1))
 def do_download():
     logging.info(download_images)
 
