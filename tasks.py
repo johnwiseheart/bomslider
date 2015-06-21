@@ -13,7 +13,7 @@ from os import environ
 base_url = "http://wac.72dd.edgecastcdn.net/8072DD/radimg/radar/IDR712.T."
 rootdir = '/app/bomslide/images/'
 
-REDIS_URL = environ.get('REDISTOGO_URL', 'redis://localhost')
+REDIS_URL = environ.get('REDIS_URL', 'redis://localhost')
 
 celery = Celery('tasks', broker=REDIS_URL)
 
