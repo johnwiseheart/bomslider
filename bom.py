@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import os
 from PIL import Image
 base_url = "http://wac.72dd.edgecastcdn.net/8072DD/radimg/radar/IDR712.T."
-rootdir = '/srv/p.jcaw.me/bomslide/images/'
+rootdir = '/app/bomslide/images/'
 
 today = datetime.utcnow()
 d = today - timedelta(hours=24)
