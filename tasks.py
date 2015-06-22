@@ -34,7 +34,7 @@ def download_images():
     delta = timedelta(minutes=6)
     while d <= today:
 
-        urllib.urlretrieve(str(base_url) +  d.strftime("%Y%m%d%H%M") + ".png",  "images/" + d.strftime("%Y%m%d%H%M") + ".png")
+        urllib.urlretrieve(str(base_url) +  d.strftime("%Y%m%d%H%M") + ".png",  rootdir + d.strftime("%Y%m%d%H%M") + ".png")
         file = d.strftime("%Y%m%d%H%M") + ".png"
         try:
             im = Image.open(os.path.join(rootdir, file))
