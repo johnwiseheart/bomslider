@@ -3,7 +3,6 @@ import urllib
 from datetime import datetime, timedelta
 import os
 from PIL import Image
-import logging
 from celery import Celery
 from celery.task import periodic_task
 from datetime import timedelta
@@ -18,11 +17,6 @@ REDIS_URL = environ.get('REDIS_URL', 'redis://localhost')
 celery = Celery('tasks', broker=REDIS_URL)
 
 @periodic_task(run_every=timedelta(minutes=1))
-def do_download():
-    logging.info(download_images)
-
-
-
 def download_images():
     print os.path.dirname(os.path.realpath(__file__))
     today = datetime.utcnow()
