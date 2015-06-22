@@ -10,7 +10,7 @@ from os import environ
 
 
 base_url = "http://wac.72dd.edgecastcdn.net/8072DD/radimg/radar/IDR712.T."
-rootdir = '/app/bomslider/images/'
+rootdir = '/app/www/images/'
 
 REDIS_URL = environ.get('REDIS_URL', 'redis://localhost')
 
