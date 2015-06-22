@@ -16,7 +16,7 @@ REDIS_URL = environ.get('REDIS_URL', 'redis://localhost')
 
 celery = Celery('tasks', broker=REDIS_URL)
 
-@periodic_task(run_every=timedelta(minutes=1))
+@periodic_task(run_every=timedelta(hours=12))
 def download_images():
     print os.path.dirname(os.path.realpath(__file__))
     today = datetime.utcnow()
