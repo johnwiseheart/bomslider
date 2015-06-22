@@ -24,6 +24,7 @@ def do_download():
 
 
 def download_images():
+    print os.path.dirname(os.path.realpath(__file__))
     today = datetime.utcnow()
     d = today - timedelta(hours=24)
 
